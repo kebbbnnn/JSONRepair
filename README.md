@@ -20,7 +20,7 @@ Then add `"JSONRepair"` to your target's dependencies.
 import JSONRepair
 
 // Basic repair — returns a type-safe JSONValue enum
-let result = try JSONRepair.repairJson(#"{"key": "value",}"#)
+let result = try JSONRepair.repair(json: #"{"key": "value",}"#)
 // → .object(["key": .string("value")])
 
 // Handles broken LLM output (input may contain ```json ... ``` code fences)
@@ -30,28 +30,28 @@ let llmOutput = """
     {"name": "Alice", "age": 30,}
     ```
     """
-let repaired = try JSONRepair.repairJson(llmOutput)
+let repaired = try JSONRepair.repair(json: llmOutput)
 // → .object(["name": .string("Alice"), "age": .number(30)])
 
 // Strict mode — throws instead of repairing
 do {
-    let _ = try JSONRepair.repairJson(#"{"key" "value"}"#, strict: true)
+    let _ = try JSONRepair.repair(json: #"{"key" "value"}"#, strict: true)
 } catch {
     print(error) // Missing ':' after key
 }
 
 // Stream-stable mode — for incremental streaming JSON
-let partial = try JSONRepair.repairJson(#"{"key": "val\n"#, streamStable: true)
+let partial = try JSONRepair.repair(json: #"{"key": "val\n"#, streamStable: true)
 // → .object(["key": .string("val\n")])
 ````
 
 ## API
 
-### `JSONRepair.repairJson(_:strict:logging:streamStable:)`
+### `JSONRepair.repair(json:strict:logging:streamStable:)`
 
 ```swift
-public static func repairJson(
-    _ jsonStr: String,
+public static func repair(
+    json: String,
     strict: Bool = false,
     logging: Bool = false,
     streamStable: Bool = false
@@ -60,7 +60,7 @@ public static func repairJson(
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `jsonStr` | — | The malformed JSON string to repair |
+| `json` | — | The malformed JSON string to repair |
 | `strict` | `false` | Throw errors on structural issues instead of repairing |
 | `logging` | `false` | Enable repair action logging (access via `JSONParser.logger`) |
 | `streamStable` | `false` | Stable repairs for incrementally-streamed JSON |

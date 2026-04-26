@@ -8,7 +8,7 @@ public struct JSONRepair {
     ///   - strict: If true, stops and throws errors on structural issues instead of repairing.
     ///   - logging: If true, captures a log of repair actions in the parser (accessible if using `JSONParser` directly).
     /// - Returns: The repaired `JSONValue`
-    public static func repairJson(_ jsonStr: String, strict: Bool = false, logging: Bool = false, streamStable: Bool = false) throws -> JSONValue {
+    public static func repair(json jsonStr: String, strict: Bool = false, logging: Bool = false, streamStable: Bool = false) throws -> JSONValue {
         // Fast path for valid JSON
         if !strict {
             if let data = jsonStr.data(using: .utf8),

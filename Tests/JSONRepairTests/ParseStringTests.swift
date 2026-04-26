@@ -4,7 +4,7 @@ import XCTest
 final class ParseStringTests: XCTestCase {
     func check(_ input: String, _ expected: String, file: StaticString = #file, line: UInt = #line) {
         do {
-            let result = try JSONRepair.repairJson(input)
+            let result = try JSONRepair.repair(json: input)
             let expectedJSON = try JSONParser(jsonStr: expected).parse()
             XCTAssertEqual(result, expectedJSON, file: file, line: line)
         } catch {
@@ -13,7 +13,7 @@ final class ParseStringTests: XCTestCase {
     }
     func checkValue(_ input: String, _ expected: JSONValue, file: StaticString = #file, line: UInt = #line) {
         do {
-            let result = try JSONRepair.repairJson(input)
+            let result = try JSONRepair.repair(json: input)
             XCTAssertEqual(result, expected, file: file, line: line)
         } catch {
             XCTFail("Failed to repair: \(error)", file: file, line: line)

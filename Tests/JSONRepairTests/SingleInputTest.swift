@@ -6,7 +6,7 @@ final class SingleInputTest: XCTestCase {
         let expectation = self.expectation(description: "repair")
         var result: JSONValue?
         DispatchQueue.global().async {
-            result = try? JSONRepair.repairJson("{ \"words\": abcdef\", \"numbers\": 12345\", \"words2\": ghijkl\" }")
+            result = try? JSONRepair.repair(json: "{ \"words\": abcdef\", \"numbers\": 12345\", \"words2\": ghijkl\" }")
             expectation.fulfill()
         }
         let waiterResult = XCTWaiter().wait(for: [expectation], timeout: 3.0)
@@ -21,7 +21,7 @@ final class SingleInputTest: XCTestCase {
         let expectation = self.expectation(description: "repair")
         var result: JSONValue?
         DispatchQueue.global().async {
-            result = try? JSONRepair.repairJson("{ \"key\": [[1, 2, 3], \"a\", \"b\"], [[4, 5, 6], [7, 8, 9]] }")
+            result = try? JSONRepair.repair(json: "{ \"key\": [[1, 2, 3], \"a\", \"b\"], [[4, 5, 6], [7, 8, 9]] }")
             expectation.fulfill()
         }
         let waiterResult = XCTWaiter().wait(for: [expectation], timeout: 3.0)

@@ -10,7 +10,7 @@ final class ParseObjectIsolationTests: XCTestCase {
         
         DispatchQueue.global().async {
             do {
-                result = try JSONRepair.repairJson(input)
+                result = try JSONRepair.repair(json: input)
             } catch let e {
                 error = e
             }

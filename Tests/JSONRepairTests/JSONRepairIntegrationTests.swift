@@ -4,7 +4,7 @@ import XCTest
 final class JSONRepairIntegrationTests: XCTestCase {
     func check(_ input: String, _ expected: String, file: StaticString = #file, line: UInt = #line) {
         do {
-            let result = try JSONRepair.repairJson(input)
+            let result = try JSONRepair.repair(json: input)
             let expectedJSON = try JSONParser(jsonStr: expected).parse()
             XCTAssertEqual(result, expectedJSON, file: file, line: line)
         } catch {
@@ -13,7 +13,7 @@ final class JSONRepairIntegrationTests: XCTestCase {
     }
     func checkValue(_ input: String, _ expected: JSONValue, file: StaticString = #file, line: UInt = #line) {
         do {
-            let result = try JSONRepair.repairJson(input)
+            let result = try JSONRepair.repair(json: input)
             XCTAssertEqual(result, expected, file: file, line: line)
         } catch {
             XCTFail("Failed to repair: \(error)", file: file, line: line)
@@ -83,7 +83,7 @@ final class JSONRepairIntegrationTests: XCTestCase {
 
     func checkStreamStable(_ input: String, _ expected: JSONValue, streamStable: Bool, file: StaticString = #file, line: UInt = #line) {
         do {
-            let result = try JSONRepair.repairJson(input, streamStable: streamStable)
+            let result = try JSONRepair.repair(json: input, streamStable: streamStable)
             XCTAssertEqual(result, expected, file: file, line: line)
         } catch {
             XCTFail("Failed to repair: \(error)", file: file, line: line)
@@ -146,7 +146,7 @@ final class JSONRepairIntegrationTests: XCTestCase {
 
     func test_logging() {
         // Logging API test — verify the logging flag doesn't crash and returns correct results
-        let result = try? JSONRepair.repairJson("{}", logging: true)
+        let result = try? JSONRepair.repair(json: "{}", logging: true)
         XCTAssertEqual(result, .object([:]))
     }
 }
