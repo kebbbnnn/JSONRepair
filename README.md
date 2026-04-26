@@ -16,20 +16,20 @@ Then add `"JSONRepair"` to your target's dependencies.
 
 ## Usage
 
-```swift
+````swift
 import JSONRepair
 
 // Basic repair — returns a type-safe JSONValue enum
 let result = try JSONRepair.repairJson(#"{"key": "value",}"#)
 // → .object(["key": .string("value")])
 
-// Handles broken LLM output
+// Handles broken LLM output (input may contain ```json ... ``` code fences)
 let llmOutput = """
-Here is the JSON:
-```json
-{"name": "Alice", "age": 30,}
-```
-"""
+    Here is the JSON:
+    ```json
+    {"name": "Alice", "age": 30,}
+    ```
+    """
 let repaired = try JSONRepair.repairJson(llmOutput)
 // → .object(["name": .string("Alice"), "age": .number(30)])
 
@@ -43,7 +43,7 @@ do {
 // Stream-stable mode — for incremental streaming JSON
 let partial = try JSONRepair.repairJson(#"{"key": "val\n"#, streamStable: true)
 // → .object(["key": .string("val\n")])
-```
+````
 
 ## API
 
@@ -86,7 +86,7 @@ Use `.rawValue` to convert back to Foundation types (`[String: Any]`, `[Any]`, e
 - Trailing commas, missing commas
 - Missing colons between keys and values
 - Unclosed objects/arrays/strings
-- LLM markdown code fences (` ```json ... ``` `)
+- LLM markdown code fences (`` ```json `` / `` ``` ``)
 - Python-style tuples `(1, 2, 3)`
 - Comments (`//`, `/* */`, `#`)
 - Boolean/null literals (`True` → `true`, `None` → `null`)
@@ -99,6 +99,11 @@ swift test
 # 140 tests, 0 failures
 ```
 
+## License
+
+MIT — see [LICENSE](LICENSE). Original Python library by Stefano Baccianella.
+
 ## Credit
 
 Ported from [json_repair](https://github.com/mangiucugna/json_repair) by Stefano Baccianella.
+
